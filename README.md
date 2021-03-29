@@ -1,10 +1,11 @@
 # sap-btp-service-operator-migration
 
 ## Prerequisite
-1. Prepare your platform for migration by executing: </br>
+1. Service Management Control (SMCTL) Command Line Interface. See [Using the SMCTL](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/0107f3f8c1954a4e96802f556fc807e3.html).
+2. Prepare your platform for migration by executing: </br>
 ```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br>
 **instanceID**: instance of service-manager/service-operator-access
-2. Install [sap btp service operator](https://github.com/SAP/sap-btp-service-operator#setup) by providing clusterID the same as of SVCAT 
+3. Install [sap btp service operator](https://github.com/SAP/sap-btp-service-operator#setup) by providing parameter ``` --set cluster.id=clusterID ``` the same as of SVCAT 
 
 ***Note: you can delete the old platform after successful migration, as it suspended and not usable anymore***
 
