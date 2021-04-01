@@ -78,7 +78,7 @@ migrating service instance 'test35' in namespace 'default' (smID: 'XXX-0f94-4fde
 deleting svcat resource type 'serviceinstances' named 'test35' in namespace 'default'
 migrating service binding 'test31' in namespace 'default' (smID: 'XXX-fc36-4d50-a925-YYY')
 deleting svcat resource type 'servicebindings' named 'test31' in namespace 'default'
-*** Migration completed successfull
+*** Migration completed successfully
 
 ```
 
