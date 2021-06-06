@@ -1,19 +1,22 @@
 # sap-btp-service-operator-migration
 
-## Prerequisite
-1. Service Management Control (SMCTL) Command Line Interface. See [Using the SMCTL](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/0107f3f8c1954a4e96802f556fc807e3.html).
+You can now perform a migration of all your SAP BTP service instances and bindings created to be consumed in Kubernetes environment by using the Service Catalog (svcat) to a new Kubernetes environment that uses the SAP BTP operator pattern. 
+
+## Prerequisites
+1. Service Management Control (SMCTL) command line Interface. See [Using the SMCTL](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/0107f3f8c1954a4e96802f556fc807e3.html).
 2. Prepare your platform for migration by executing: </br>
 ```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br>
 **instanceID**: instance of service-manager/service-operator-access
-3. Install [sap btp service operator](https://github.com/SAP/sap-btp-service-operator#setup) by providing parameter ``` --set cluster.id=clusterID ``` the same as of SVCAT 
+3. Install [sap btp service operator](https://github.com/SAP/sap-btp-service-operator#setup) by providing the parameter ``` --set cluster.id=clusterID ```,the same as for SVCAT. 
 
 ***Note: you can delete the old platform after successful migration, as it suspended and not usable anymore***
 
-## Getting started
+## Setup
 
-To use the migration CLI you need to download and install it first:
+Download and install the CLI needed to perform the migration in one of the following ways:
 
-### Approach 1: Manual installation
+
+### Manual installation
 
 #### Download CLI
 ``go get github.com/SAP/sap-btp-service-operator-migration``
@@ -26,7 +29,7 @@ To use the migration CLI you need to download and install it first:
 
 ``mv $GOPATH/bin/sap-btp-service-operator-migration $GOPATH/bin/migrate``
 
-### Approach 2: Get the latest CLI release
+### Download the Latest CLI Release
 You can get started with the CLI by simply downloading the latest release from [HERE](https://github.com/SAP/sap-btp-service-operator-migration/releases).
 
 
