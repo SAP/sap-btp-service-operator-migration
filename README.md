@@ -1,39 +1,57 @@
-# sap-btp-service-operator-migration
+# Migration to SAP BTP Service Operator 
 
-You can now perform a migration of all your SAP BTP service instances and bindings created to be consumed in Kubernetes environment by using the Service Catalog (svcat) to a new Kubernetes environment that uses the SAP BTP operator pattern. 
+You can now perform a migration of all your SAP BTP service instances and bindings created to be consumed in the Kubernetes environment by using the Service Catalog (svcat) to a new Kubernetes environment that uses the SAP BTP operator pattern. 
+
+## Table of Contents
+* [Prerequisites](#prerequisites)
+* [Setup](#setup)
+* [CLI Overview](#cli-overview)
+* [Using the CLI (Example)](#using-the-cli-example)
+* [Reference Documentation](#reference-documentation)
+* [Support](#support)
+* [Troubleshooting](#troubleshooting)
+* [Contributions](#contributions)
+* [License](#license)
 
 ## Prerequisites
-1. Service Management Control (SMCTL) command line Interface. See [Using the SMCTL](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/0107f3f8c1954a4e96802f556fc807e3.html).
-2. Prepare your platform for migration by executing: </br>
-```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br>
-**instanceID**: instance of service-manager/service-operator-access
-3. Install [sap btp service operator](https://github.com/SAP/sap-btp-service-operator#setup) by providing the parameter ``` --set cluster.id=clusterID ```,the same as for SVCAT. 
+- Service Management Control (SMCTL) command line Interface. See [Using the SMCTL](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/0107f3f8c1954a4e96802f556fc807e3.html).
 
-***Note: you can delete the old platform after successful migration, as it suspended and not usable anymore***
 
 ## Setup
 
-Download and install the CLI needed to perform the migration in one of the following ways:
+1. Prepare your platform for migration by executing the following command: </br>
+```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br>
+   Where **instanceID** is the instance of service-manager/service-operator-access.</br></br>
+2. Install [sap btp service operator](https://github.com/SAP/sap-btp-service-operator#setup) by running the following command: </br>
+ ``` --set cluster.id=clusterID ``` </br>
+   Where the **clusterID** is identical to the clusterID used to create an svcat-based Kubernetes environment.
+   
+   #### *Note*
+   *You can delete the old platform after a successful migration as it becomes suspended and is no longer usable.*</br>
+
+3. Download and install the CLI needed to perform the migration in one of the two following ways:
 
 
-### Manual installation
+  * #### Manual installation</br>
+    Get the (what):</br>
+   
+     ``go get github.com/SAP/sap-btp-service-operator-migration``
 
-#### Download CLI
-``go get github.com/SAP/sap-btp-service-operator-migration``
+    Install CLI:</br>
 
-#### Install CLI
+    ``go install github.com/SAP/sap-btp-service-operator-migration``
 
-``go install github.com/SAP/sap-btp-service-operator-migration``
+    Rename the CLI binary:</br>
 
-#### Rename the CLI binary
+    ``mv $GOPATH/bin/sap-btp-service-operator-migration $GOPATH/bin/migrate``
 
-``mv $GOPATH/bin/sap-btp-service-operator-migration $GOPATH/bin/migrate``
+   * #### Automatic Installation</br>
+     [Download the latest release](https://github.com/SAP/sap-btp-service-operator-migration/releases).</br>
+     What is the advantage of this vs the other way?</br>
+   
+ 
 
-### Download the Latest CLI Release
-You can get started with the CLI by simply downloading the latest release from [HERE](https://github.com/SAP/sap-btp-service-operator-migration/releases).
-
-
-## Using CLI
+## CLI Overview
 
 ```
 Migration tool from SVCAT to SAP BTP Service Operator.
@@ -55,7 +73,7 @@ Flags:
   -n, --namespace string    namespace to find operator secret (default sap-btp-operator)
 ```
 
-## Example usage of CLI:
+## Using the CLI (Example):
 
 ```sh
 # Run migration including pre migration validations
@@ -84,4 +102,14 @@ deleting svcat resource type 'servicebindings' named 'test31' in namespace 'defa
 *** Migration completed successfully
 
 ```
+## Reference Documentation
 
+## Support
+You're welcome to raise issues related to feature requests, bugs, or give us general feedback on this project's GitHub Issues page. 
+The SAP BTP service operator project maintainers will respond to the best of their abilities. 
+
+## Troubleshooting
+
+## Contributions
+
+## License
