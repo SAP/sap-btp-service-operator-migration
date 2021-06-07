@@ -7,7 +7,6 @@ Our mission was to define and design a solution that would make it possible to m
 ## Table of Contents
 * [Prerequisites](#prerequisites)
 * [Setup](#setup)
-* [CLI Overview](#cli-overview)
 * [Using the CLI (Example)](#using-the-cli-example)
 * [Reference Documentation](#reference-documentation)
 * [Support](#support)
@@ -22,10 +21,8 @@ Our mission was to define and design a solution that would make it possible to m
 
 ## Setup
 
-1. Prepare your platform for migration by executing the following command: </br>
-```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br>
-   Where:</br> **platformID** is the ID of the Kubernetes platform.</br> **instanceID** is the instance of ``service-manager``, created with the  ``service-operator-access`` plan.</br></br>
-2. Install [sap btp service operator](https://github.com/SAP/sap-btp-service-operator#setup) and set the following parameter: </br>
+
+1. Install [sap btp service operator](https://github.com/SAP/sap-btp-service-operator#setup) and set the following parameter: </br>
  ``` --set cluster.id=clusterID ``` </br>
    Where the **clusterID** is identical to the clusterID used to create an svcat-based Kubernetes environment.
    
@@ -53,27 +50,34 @@ Our mission was to define and design a solution that would make it possible to m
      
    
  
-## CLI Overview
+   #### CLI Overview
 
-```
-Migration tool from SVCAT to SAP BTP Service Operator.
+   ```
+   Migration tool from SVCAT to SAP BTP Service Operator.
 
-Usage:
-  migrate [flags]
-  migrate [command]
+   Usage:
+     migrate [flags]
+     migrate [command]
 
-Available Commands:
-  dry-run     Run migration in dry run mode
-  help        Help about any command
-  run         Run migration process
-  version     Prints migrate version
+   Available Commands:
+     dry-run     Run migration in dry run mode
+     help        Help about any command
+     run         Run migration process
+     version     Prints migrate version
 
-Flags:
-  -c, --config string       config file (default is $HOME/.migrate/config.json)
-  -h, --help                help for migrate
-  -k, --kubeconfig string   absolute path to the kubeconfig file (default $HOME/.kube/config)
-  -n, --namespace string    namespace to find operator secret (default sap-btp-operator)
-```
+   Flags:
+     -c, --config string       config file (default is $HOME/.migrate/config.json)
+     -h, --help                help for migrate
+     -k, --kubeconfig string   absolute path to the kubeconfig file (default $HOME/.kube/config)
+     -n, --namespace string    namespace to find operator secret (default sap-btp-operator)
+   ```
+
+## Executing the Migration
+
+1. Prepare your platform for migration by executing the following command: </br>
+```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br>
+   Where:</br> **platformID** is the ID of the Kubernetes platform.</br> **instanceID** is the instance of ``service-manager``, created with the  ``service-operator-access`` plan.</br></br>
+
 
 ## Using the CLI (Example):
 
