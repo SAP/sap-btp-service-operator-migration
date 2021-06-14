@@ -22,12 +22,26 @@ Our mission was to define and design a solution that would make it possible to m
 ## Setup
 
 
-1. Install [sap btp service operator](https://github.com/SAP/sap-btp-service-operator#setup) and set the following parameter: </br>
- ``` --set cluster.id=clusterID ``` </br>
-   Where the **clusterID** is identical to the clusterID used to create an svcat-based Kubernetes environment.
+1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager service and then binding to that instance.</br>
+   For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br>
+2. Deploy the SAP BTP service operator in the cluster using the obtained access credentials by executing the following command with the combination of parameters:
    
-   #### *Note*
-   *You can delete the old platform after a successful migration as it becomes suspended and is no longer usable.*</br>
+   ```bash
+    helm upgrade --install sap-btp-operator https://github.com/SAP/sap-btp-service-operator/releases/download/<release>/sap-btp-operator-<release>.tgz \
+        --create-namespace \
+        --namespace=sap-btp-operator \
+        --set manager.secret.clientid=<clientid> \
+        --set manager.secret.clientsecret=<clientsecret> \
+        --set manager.secret.url=<sm_url> \
+        --set manager.secret.tokenurl=<url>
+        --set cluster.id=clusterID
+    ```
+    #### *Notes*
+   *-- You have added the ``` --set cluster.id=clusterID ``` parameter so that you can deploy the same cluster you've created using an &nbsp;&nbsp;&nbsp;svcat-based Kubernetes environment.</br>
+      &nbsp;&nbsp;&nbsp;Therefore, the **clusterID** is identical to the clusterID used to create an svcat-based Kubernetes environment.* </br>
+   
+  
+   *-- After you've redeployed the platform using the existing clusterID, ,the old platform becomes suspended and is no longer usable.*</br>
 
 3. Download and install the CLI needed to perform the migration in one of the two following ways:
 
@@ -50,33 +64,33 @@ Our mission was to define and design a solution that would make it possible to m
      
    
  
-   #### CLI Overview
+     #### CLI Overview
 
-   ```
-   Migration tool from SVCAT to SAP BTP Service Operator.
+     ```
+     Migration tool from SVCAT to SAP BTP Service Operator.
 
-   Usage:
-     migrate [flags]
-     migrate [command]
+     Usage:
+       migrate [flags]
+       migrate [command]
 
-   Available Commands:
-     dry-run     Run migration in dry run mode
-     help        Help about any command
-     run         Run migration process
-     version     Prints migrate version
+     Available Commands:
+       dry-run     Run migration in dry run mode
+       help        Help about any command
+       run         Run migration process
+       version     Prints migrate version
 
-   Flags:
-     -c, --config string       config file (default is $HOME/.migrate/config.json)
-     -h, --help                help for migrate
-     -k, --kubeconfig string   absolute path to the kubeconfig file (default $HOME/.kube/config)
-     -n, --namespace string    namespace to find operator secret (default sap-btp-operator)
-   ```
+     Flags:
+       -c, --config string       config file (default is $HOME/.migrate/config.json)
+       -h, --help                help for migrate
+       -k, --kubeconfig string   absolute path to the kubeconfig file (default $HOME/.kube/config)
+       -n, --namespace string    namespace to find operator secret (default sap-btp-operator)
+     ```
 
 ## Executing the Migration
 
 1. Prepare your platform for migration by executing the following command: </br>
 ```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br>
-   Where:</br> **platformID** is the ID of the Kubernetes platform.</br> **instanceID** is the instance of ``service-manager``, created with the  ``service-operator-access`` plan.</br></br>
+   Where:</br> **platformID** is the ID of the Kubernetes platform.</br> **instanceID** is the instance of ``service-manager``, created in the step 1 of the [Setup](#setup).</br></br>
 
 
 ## Using the CLI (Example):
