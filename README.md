@@ -2,7 +2,7 @@
 
 SAP BTP service operator provides the ability to provision and consume SAP Cloud Platform from Kubernetes cluster in a Kubernetes-native way, based on the K8s Operator pattern.
 
-Our mission was to define and design a solution that would make it possible to migrate a registered K8S platform, based on the Service Catalog (svcat) and Service Manager agent, together with its content, to s SAP BTP service operator-based platform.
+Our mission was to define and design a solution that would make it possible to migrate a registered Kubernetes platform, based on the Service Catalog (svcat) and Service Manager agent, together with its content, to s SAP BTP service operator-based platform.
 
 ## Table of Contents
 * [Prerequisites](#prerequisites)
@@ -22,9 +22,9 @@ Our mission was to define and design a solution that would make it possible to m
 ## Setup
 
 
-1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager service and then binding to that instance.</br>
+1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager service (technical name: ```service-manager```) with the ```service-operator-access``` plan and then creating a binding to that instance.</br>
    For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br>
-2. Deploy the SAP BTP service operator in the cluster using the obtained access credentials by executing the following command with the combination of parameters:
+2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**In the ```cluster.id``` parameter, specify the clusterID that was used when [registering the subaccount-Kubernetes platform](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) that you want to migrate.**
    
    ```bash
     helm upgrade --install sap-btp-operator https://github.com/SAP/sap-btp-service-operator/releases/download/<release>/sap-btp-operator-<release>.tgz \
@@ -34,37 +34,28 @@ Our mission was to define and design a solution that would make it possible to m
         --set manager.secret.clientsecret=<clientsecret> \
         --set manager.secret.url=<sm_url> \
         --set manager.secret.tokenurl=<url>
-        --set cluster.id=clusterID
+        --set cluster.id=<clusterID>
     ```
-    #### *Notes*
-   *-- You have added the ``` --set cluster.id=clusterID ``` parameter so that you can deploy the same cluster you've created using an &nbsp;&nbsp;&nbsp;svcat-based Kubernetes environment.</br>
-      &nbsp;&nbsp;&nbsp;Therefore, the **clusterID** is identical to the clusterID used to create an svcat-based Kubernetes environment.* </br>
-   
-  
-   *-- After you've redeployed the platform using the existing clusterID, ,the old platform becomes suspended and is no longer usable.*</br>
-
+    
 3. Download and install the CLI needed to perform the migration in one of the two following ways:
 
 
-  * #### Manual installation</br>
-    Get the service operator migration CLI:</br>
-   
-     ``go get github.com/SAP/sap-btp-service-operator-migration``
+   * #### Manual installation</br>
+     Get the service operator migration CLI:</br>
+      ``go get github.com/SAP/sap-btp-service-operator-migration``
 
-    Install the CLI:</br>
+     Install the CLI:</br>
+     ``go install github.com/SAP/sap-btp-service-operator-migration``
 
-    ``go install github.com/SAP/sap-btp-service-operator-migration``
+     Rename the CLI binary:</br>
+     ``mv $GOPATH/bin/sap-btp-service-operator-migration $GOPATH/bin/migrate``
 
-    Rename the CLI binary:</br>
-
-    ``mv $GOPATH/bin/sap-btp-service-operator-migration $GOPATH/bin/migrate``
-
-   * #### Automatic Installation</br>
-     [Download the latest release](https://github.com/SAP/sap-btp-service-operator-migration/releases).</br>
+    * #### Automatic Installation</br>
+      You can install the CLI by simply [downloading the latest release](https://github.com/SAP/sap-btp-service-operator-migration/releases).</br>
      
    
  
-     #### CLI Overview
+     #### CLI Overview</br>
 
      ```
      Migration tool from SVCAT to SAP BTP Service Operator.
@@ -90,7 +81,7 @@ Our mission was to define and design a solution that would make it possible to m
 
 1. Prepare your platform for migration by executing the following command: </br>
 ```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br>
-   Where:</br> **platformID** is the ID of the Kubernetes platform.</br> **instanceID** is the instance of ``service-manager``, created in the step 1 of the [Setup](#setup).</br></br>
+   Where:</br> **platformID** is the ID that was used when [registering the subaccount-Kubernetes platform](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) </br> **instanceID** is the ID of the ```service-operator-access``` instance created in the step 1 of the [Setup](#setup).</br></br>
 
 
 ## Using the CLI (Example):
