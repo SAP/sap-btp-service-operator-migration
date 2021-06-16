@@ -7,6 +7,8 @@ Our mission was to define and design a solution that would make it possible to m
 ## Table of Contents
 * [Prerequisites](#prerequisites)
 * [Setup](#setup)
+* [Preparing the Migration](#preparing-the-migration)
+* [Executing the Migration](#executing-the-migration)
 * [Using the CLI (Example)](#using-the-cli-example)
 * [Reference Documentation](#reference-documentation)
 * [Support](#support)
@@ -77,7 +79,7 @@ Our mission was to define and design a solution that would make it possible to m
        -n, --namespace string    namespace to find operator secret (default sap-btp-operator)
      ```
 
-## Executing the Migration
+## Preparing the Migration
 
 1. Prepare your platform for migration by executing the following command: </br>
 ```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br>
@@ -85,6 +87,21 @@ Our mission was to define and design a solution that would make it possible to m
    #### *Note* 
    
    *Once the migration has been initiated, the platform is suspended, and you cannot create, update or delete its service instances and service bindings.*
+   
+## Executing the Migration
+
+Run the migration script by executing the following command:</br>
+```migrate run```
+
+The script scans all service instances and service bindings that are managed in your cluster by SVCAT, and verifies whether they are also maintained in SAP BTP.</br>Migration   won't be performed on those instances and bindings that aren't found in SAP BTP.</br></br>
+Before the actual migration starts, the script also validates whether all the resources are migratable. [what does this mean] If there is an issue with one or more resources,   the process stops.</br></br>
+After all of the sources were validated successfully, the actual migration starts. Each service instance and binding is removed from the Service Catalog (SVCAT) and added to     the SAP BTP service operator.</br></br>
+## Dry Run
+Before executant the migration, you can perform a dry run by executing the following command:</br>
+```migrate dry-run```
+
+The dry run performs both validations mentioned in the previous section, but doesn't perform the migration.</br>
+At the end of the run, summary including all encountered errors is shown. 
 
 
 ## Using the CLI (Example):
