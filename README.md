@@ -8,7 +8,6 @@ This document describes the process to migrate a registered Kubernetes platform,
 * [Prerequisites](#prerequisites)
 * [Setup](#setup)
 * [Migration](#migration)
-* [Using the CLI (Example)](#using-the-cli-example)
 * [Reference Documentation](#reference-documentation)
 * [Support](#support)
 * [Troubleshooting](#troubleshooting)
@@ -82,7 +81,7 @@ This document describes the process to migrate a registered Kubernetes platform,
 
 1. Prepare your platform for migration by executing the following command: </br>
 ```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br></br>
-   Where:</br> **platformID** is the ID that was used when [registering the subaccount-scoped Kubernetes platform](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) </br> **instanceID** is the ID of the ```service-operator-access``` instance created in the step 1 of the [Setup](#setup).</br>
+   Where the parameter values are as following:</br> **platformID** is the ID that was used when [registering the subaccount-scoped Kubernetes platform](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) </br> **instanceID** is the ID of the ```service-operator-access``` instance created in the step 1 of the [Setup](#setup).</br>
    #### *Note* 
     *Once the migration process has been initiated, the platform is suspended, and you cannot create, update or delete its service instances and service bindings.</br>The process is reversible for as long as you don't start the execution script described in the next step.*
    
@@ -126,7 +125,7 @@ This document describes the process to migrate a registered Kubernetes platform,
     ```
     
     #### Dry Run
-    Before executant the migration, you can perform a dry run by executing the following command:</br>
+    Before executing the migration, you can perform a dry run by running the following command:</br>
     ```migrate dry-run```
 
     The dry run performs both validations mentioned in the previous section, but doesn't perform the actual migration.</br>
@@ -136,35 +135,6 @@ This document describes the process to migrate a registered Kubernetes platform,
     *Once the migration process has been completed, the SVCAT-based platform is no longer usable.*
 
 
-## Using the CLI (Example):
-
-```sh
-# Run migration including pre migration validations
-migrate run
-*** Fetched 2 instances from SM
-*** Fetched 1 bindings from SM
-*** Fetched 5 svcat instances from cluster
-*** Fetched 2 svcat bindings from cluster
-*** Preparing resources
-svcat instance name 'test11' id 'XXX-6134-4c89-bff5-YYY' (test11) not found in SM, skipping it...
-svcat instance name 'test21' id 'XXX-cae6-4e23-9e8a-YYY' (test21) not found in SM, skipping it...
-svcat instance name 'test22' id 'XXX-dc1d-49d1-86c0-YYY' (test22) not found in SM, skipping it...
-svcat binding name 'test5' id 'XXX-5226-42cc-81e5-YYY' (test5) not found in SM, skipping it...
-*** found 2 instances and 1 bindings to migrate
-*** Validating
-svcat instance 'test32' in namespace 'default' was validated successfully
-svcat instance 'test35' in namespace 'default' was validated successfully
-svcat binding 'test31' in namespace 'default' was validated successfully
-*** Validation completed successfully
-migrating service instance 'test32' in namespace 'default' (smID: 'XXX-3d1f-40db-8cac-YYY')
-deleting svcat resource type 'serviceinstances' named 'test32' in namespace 'default'
-migrating service instance 'test35' in namespace 'default' (smID: 'XXX-0f94-4fde-b524-YYY')
-deleting svcat resource type 'serviceinstances' named 'test35' in namespace 'default'
-migrating service binding 'test31' in namespace 'default' (smID: 'XXX-fc36-4d50-a925-YYY')
-deleting svcat resource type 'servicebindings' named 'test31' in namespace 'default'
-*** Migration completed successfully
-
-```
 ## Reference Documentation
 
 ## Support
