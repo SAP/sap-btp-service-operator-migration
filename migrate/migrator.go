@@ -142,8 +142,7 @@ func (m *Migrator) Migrate(ctx context.Context, executionMode ExecutionMode) {
 		failuresCount, validationErrorsMsg := m.validate(ctx, instancesToMigrate, bindingsToMigrate)
 		if failuresCount > 0 {
 			fmt.Println(fmt.Sprintf("Validation failed got %d validation errors:", failuresCount))
-			fmt.Println(validationErrorsMsg.String())
-			return
+			cobra.CheckErr(validationErrorsMsg)
 		} else {
 			fmt.Println("*** Validation completed successfully")
 		}
@@ -175,7 +174,7 @@ func (m *Migrator) Migrate(ctx context.Context, executionMode ExecutionMode) {
 		fmt.Println("*** Migration completed successfully")
 	} else {
 		fmt.Println("*** Migration failures summary:")
-		fmt.Println(failuresBuffer.String())
+		cobra.CheckErr(failuresBuffer.String())
 	}
 }
 
