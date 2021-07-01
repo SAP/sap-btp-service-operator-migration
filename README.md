@@ -4,6 +4,7 @@ SAP BTP service operator provides the ability to provision and consume SAP Cloud
 
 This document describes the process to migrate a registered Kubernetes platform, based on the Service Catalog (svcat) and Service Manager agent, together with its content, to a SAP BTP service operator-based platform.
 
+
 ## Table of Contents
 * [Prerequisites](#prerequisites)
 * [Setup](#setup)
@@ -18,9 +19,7 @@ This document describes the process to migrate a registered Kubernetes platform,
 - Service Management Control (SMCTL) command line Interface. See [Using the SMCTL](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/0107f3f8c1954a4e96802f556fc807e3.html).
 - You must be a SAP BTP subaccount admin
 
-
 ## Setup
-
 
 1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager service (technical name: ```service-manager```) with the ```service-operator-access``` plan and then creating a binding to that instance.</br></br>
    For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br>
@@ -144,5 +143,6 @@ The SAP BTP service operator project maintainers will respond to the best of the
 ## Troubleshooting
 
 ## Contributions
+
 
 ## License

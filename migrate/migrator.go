@@ -5,12 +5,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/SAP/sap-btp-service-operator-migration/sapoperator"
 	"net/http"
+	"strings"
 
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/clientcmd"
 
+	"github.com/SAP/sap-btp-service-operator-migration/sapoperator"
 	"github.com/SAP/sap-btp-service-operator/api/v1alpha1"
 	"github.com/SAP/sap-btp-service-operator/client/sm"
 	"github.com/SAP/sap-btp-service-operator/client/sm/types"
@@ -19,8 +20,13 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+)
+
+const (
+	migratedLabel = "migrated"
 )
 
 type Migrator struct {
@@ -41,6 +47,11 @@ type serviceInstancePair struct {
 type serviceBindingPair struct {
 	svcatBinding *v1beta1.ServiceBinding
 	smBinding    *types.ServiceBinding
+}
+
+type object interface {
+	metav1.Object
+	runtime.Object
 }
 
 type ExecutionMode int
@@ -131,8 +142,7 @@ func (m *Migrator) Migrate(ctx context.Context, executionMode ExecutionMode) {
 		failuresCount, validationErrorsMsg := m.validate(ctx, instancesToMigrate, bindingsToMigrate)
 		if failuresCount > 0 {
 			fmt.Println(fmt.Sprintf("Validation failed got %d validation errors:", failuresCount))
-			fmt.Println(validationErrorsMsg.String())
-			return
+			cobra.CheckErr(validationErrorsMsg)
 		} else {
 			fmt.Println("*** Validation completed successfully")
 		}
@@ -164,7 +174,7 @@ func (m *Migrator) Migrate(ctx context.Context, executionMode ExecutionMode) {
 		fmt.Println("*** Migration completed successfully")
 	} else {
 		fmt.Println("*** Migration failures summary:")
-		fmt.Println(failuresBuffer.String())
+		cobra.CheckErr(failuresBuffer.String())
 	}
 }
 
@@ -225,10 +235,7 @@ func (m *Migrator) migrateInstanceDryRun(ctx context.Context, pair serviceInstan
 		Body(instance).
 		Do(ctx).
 		Error()
-	if err != nil {
-		return err
-	}
-	return nil
+	return m.ignoreAlreadyMigrated(ctx, instance, &v1alpha1.ServiceInstance{}, err)
 }
 
 func (m *Migrator) migrateBindingDryRun(ctx context.Context, pair serviceBindingPair) error {
@@ -240,10 +247,7 @@ func (m *Migrator) migrateBindingDryRun(ctx context.Context, pair serviceBinding
 		Body(binding).
 		Do(ctx).
 		Error()
-	if err != nil {
-		return err
-	}
-	return nil
+	return m.ignoreAlreadyMigrated(ctx, binding, &v1alpha1.ServiceBinding{}, err)
 }
 
 func (m *Migrator) migrateInstance(ctx context.Context, pair serviceInstancePair) error {
@@ -270,7 +274,7 @@ func (m *Migrator) migrateInstance(ctx context.Context, pair serviceInstancePair
 		Do(ctx).
 		Into(res)
 
-	if err != nil {
+	if err = m.ignoreAlreadyMigrated(ctx, instance, res, err); err != nil {
 		return fmt.Errorf("failed to create service instance: %v", err.Error())
 	}
 
@@ -340,7 +344,7 @@ func (m *Migrator) migrateBinding(ctx context.Context, pair serviceBindingPair) 
 		Body(binding).
 		Do(ctx).
 		Into(res)
-	if err != nil {
+	if err = m.ignoreAlreadyMigrated(ctx, binding, res, err); err != nil {
 		return fmt.Errorf("failed to create service binding: %v", err.Error())
 	}
 
@@ -493,7 +497,7 @@ func (m *Migrator) getInstanceStruct(pair serviceInstancePair) *v1alpha1.Service
 			Name:      pair.svcatInstance.Name,
 			Namespace: pair.svcatInstance.Namespace,
 			Labels: map[string]string{
-				"migrated": "true",
+				migratedLabel: "true",
 			},
 			Annotations: map[string]string{
 				"original_creation_timestamp": pair.svcatInstance.CreationTimestamp.String(),
@@ -534,7 +538,7 @@ func (m *Migrator) getBindingStruct(pair serviceBindingPair) *v1alpha1.ServiceBi
 			Name:      pair.svcatBinding.Name,
 			Namespace: pair.svcatBinding.Namespace,
 			Labels: map[string]string{
-				"migrated": "true",
+				migratedLabel: "true",
 			},
 			Annotations: map[string]string{
 				"original_creation_timestamp": pair.svcatBinding.CreationTimestamp.String(),
@@ -547,4 +551,22 @@ func (m *Migrator) getBindingStruct(pair serviceBindingPair) *v1alpha1.ServiceBi
 			Parameters:          pair.svcatBinding.Spec.Parameters,
 		},
 	}
+}
+
+func (m *Migrator) ignoreAlreadyMigrated(ctx context.Context, obj, res object, err error) error {
+	if err == nil {
+		return nil
+	}
+	if !errors.IsAlreadyExists(err) {
+		return err
+	}
+	kind := obj.GetObjectKind().GroupVersionKind().Kind
+	resource := fmt.Sprintf("%vs", strings.ToLower(kind))
+	if err := m.SapOperatorRestClient.Get().Namespace(obj.GetNamespace()).Resource(resource).Name(obj.GetName()).Do(ctx).Into(res); err != nil {
+		return err
+	}
+	if res.GetLabels()[migratedLabel] != "true" {
+		return fmt.Errorf("resource already exists and is missing label %v", migratedLabel)
+	}
+	return nil
 }
