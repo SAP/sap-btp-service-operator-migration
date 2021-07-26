@@ -89,6 +89,9 @@ func createOrOverrideConfig() {
 	kube := kubeconfig
 	if kube == "" {
 		kube = filepath.Join(homeDir(), ".kube", "config")
+		if _, err := os.Stat(kube); os.IsNotExist(err) {
+			kube = ""
+		}
 	}
 	ns := managedNamespace
 	if ns == "" {
