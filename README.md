@@ -116,15 +116,18 @@ To delpoy the SAP BTP service operator execute following command:
 
 2. Execute the migration by running the following command:</br>
   ```migrate run```
+  
    #### *Note* 
-   if you'd like to perform a dry run first, execute:
-   ```migrate dry-run```
+   if you'd like to perform a dry run first, execute:</br>
+    ```migrate dry-run```
+   
 #### Migration Script Example
    The script first scans all service instances and service bindings that are managed in your cluster by SVCAT, and verifies whether they are also maintained in SAP BTP.</br>Migration won't be performed on those instances and bindings that aren't found in SAP BTP:
 
   ```sh
     migrate run
-    Fetched 2 instances from SM
+    
+     <span style="color:orange;">Fetched 2 instances from SM </span>
     *** Fetched 1 bindings from SM
     *** Fetched 5 svcat instances from cluster
     *** Fetched 2 svcat bindings from cluster
@@ -142,6 +145,7 @@ Before the actual migration starts, the script also validates whether all the re
     svcat instance 'feature-flags-ins3' in namespace 'default' was validated successfully
     svcat instance 'saas-ins1' in namespace 'default' was validated successfully
     svcat binding 'extended-service-bindingn2' in namespace 'default' was validated successfully
+    
     *** Validation completed successfully
    ```
     
