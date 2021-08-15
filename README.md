@@ -118,7 +118,7 @@ To delpoy the SAP BTP service operator execute following command:
   ```migrate run```
   
    #### *Note* 
-   if - ![#f03c15] you'd  `#f03c15`like to perform a dry run first, execute:</br>
+   if you'd like to perform a dry run first, execute:</br>
     ```migrate dry-run```
    
 #### Migration Script Example
@@ -127,7 +127,7 @@ To delpoy the SAP BTP service operator execute following command:
   ```sh
     migrate run
     
-     - ![#f03c15]Fetched 2 instances from SM  `#f03c15`
+    Fetched 2 instances from SM
     *** Fetched 1 bindings from SM
     *** Fetched 5 svcat instances from cluster
     *** Fetched 2 svcat bindings from cluster
@@ -141,8 +141,8 @@ To delpoy the SAP BTP service operator execute following command:
     *** found 2 instances and 1 bindings to migrate 
   ```
 Before the actual migration starts, the script also validates whether all the resources are migratable.</br> Note that if there is an issue with one or more resources, the process stops.
-  ```sh
-    svcat instance 'feature-flags-ins3' in namespace 'default' was validated successfully
+  ```html
+    svcat instance <font color="green">'feature-flags-ins3'</font> in namespace 'default' was validated successfully
     svcat instance 'saas-ins1' in namespace 'default' was validated successfully
     svcat binding 'extended-service-bindingn2' in namespace 'default' was validated successfully
     
@@ -161,7 +161,7 @@ Before the actual migration starts, the script also validates whether all the re
     *** Migration completed successfully
   ```
   #### Dry Run
-    Before executing the migration, you can perform a dry run by running the following command:</br>
+   Before executing the migration, you can perform a dry run by running the following command:</br>
    ```migrate dry-run```
 
    The dry run performs both validations mentioned in the previous section, but doesn't perform the actual migration.</br>
