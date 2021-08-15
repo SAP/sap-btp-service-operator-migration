@@ -23,14 +23,13 @@ This document describes the process to migrate a registered Kubernetes platform,
 
 1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager service (technical name: ```service-manager```) with the ```service-operator-access``` plan and then creating a binding to that instance.</br></br>
    For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br>
-2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**In the ```cluster.id``` parameter, specify the clusterID which is retrieved by running 
+2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**In the ```cluster.id``` parameter, specify the clusterID which is retrieved by running **
 
 ```kubectl get configmap -n catalog cluster-info -o yaml```
-
  ```sh
 apiVersion: v1
 data:
-  ***id: ab7fa5e9-5cc3-468f-ab4d-143458785d07***
+  __id: ab7fa5e9-5cc3-468f-ab4d-143458785d07__
 kind: ConfigMap
 metadata:
   creationTimestamp: "2021-08-11T12:29:27Z"
@@ -49,7 +48,7 @@ metadata:
   resourceVersion: "810930"
   uid: d07d3d11-d5a2-4973-aab0-355cb960ec71
   ```
-4. (https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) that you want to migrate.**
+To delpoy the SAP BTP service operator execute following command: 
    
    ```bash
     helm upgrade --install sap-btp-operator https://github.com/SAP/sap-btp-service-operator/releases/download/<release>/sap-btp-operator-<release>.tgz \
@@ -118,40 +117,44 @@ metadata:
   ```migrate run```
   
     #### Migration Script Example
-    The script first scans all service instances and service bindings that are managed in your cluster by SVCAT, and verifies whether they are also maintained in SAP BTP.</br>Migration won't be performed on those instances and bindings that aren't found in SAP BTP:
+    The script first scans all service instances and service bindings that are managed in your cluster by SVCAT, and verifies whether they are also maintained in SAP BTP.</br>Migration won't be performed on those instances and bindings that aren't found in SAP BTP. Before executing the migration, you can perform a dry run by running the following command:
+    
+       ```sh
+    migrate dry-run
+    ```
+    To start a migration, run: 
     ```sh
     migrate run
-    
-    *** Fetched 2 instances from SM
+    ![#f03c15]Fetched`#f03c15` 2 instances from SM
     *** Fetched 1 bindings from SM
     *** Fetched 5 svcat instances from cluster
     *** Fetched 2 svcat bindings from cluster
     *** Preparing resources
     
-    svcat instance name 'postgres_ins_1' id 'XXX-6134-4c89-bff5-YYY' (test11) not found in SM, skipping it...
-    svcat instance name 'xsuaa_ins_2' id 'XXX-cae6-4e23-9e8a-YYY' (test21) not found in SM, skipping it...
-    svcat instance name 'certificate_3' id 'XXX-dc1d-49d1-86c0-YYY' (test22) not found in SM, skipping it...
-    svcat binding name 'auditlog_1' id 'XXX-5226-42cc-81e5-YYY' (test5) not found in SM, skipping it...
+    svcat instance name 'postgres_ins_1' id 'XXX-6134-4c89-bff5-YYY' (postgres_ins_1) not found in SM, skipping it...
+    svcat instance name 'xsuaa_ins_2' id 'XXX-cae6-4e23-9e8a-YYY' (xsuaa_ins_2) not found in SM, skipping it...
+    svcat instance name 'certificate_3' id 'XXX-dc1d-49d1-86c0-YYY' (certificate_3) not found in SM, skipping it...
+    svcat binding name 'auditlog_1' id 'XXX-5226-42cc-81e5-YYY' (auditlog_1) not found in SM, skipping it...
     
     *** found 2 instances and 1 bindings to migrate 
     ```
     
     Before the actual migration starts, the script also validates whether all the resources are migratable.</br> Note that if there is an issue with one or more resources, the process stops.
      ```sh
-    svcat instance 'test32' in namespace 'default' was validated successfully
-    svcat instance 'test35' in namespace 'default' was validated successfully
-    svcat binding 'test31' in namespace 'default' was validated successfully
+    svcat instance 'feature-flags-ins3' in namespace 'default' was validated successfully
+    svcat instance 'saas-ins1' in namespace 'default' was validated successfully
+    svcat binding 'extended-service-bindingn2' in namespace 'default' was validated successfully
     *** Validation completed successfully
     ```
     
     After all of the sources were validated successfully, the actual migration starts.</br>Each service instance and binding is removed from the Service Catalog (SVCAT) and added to the SAP BTP service operator:
     ```
-    migrating service instance 'test32' in namespace 'default' (smID: 'XXX-3d1f-40db-8cac-YYY')
-    deleting svcat resource type 'serviceinstances' named 'test32' in namespace 'default'
-    migrating service instance 'test35' in namespace 'default' (smID: 'XXX-0f94-4fde-b524-YYY')
-    deleting svcat resource type 'serviceinstances' named 'test35' in namespace 'default'
-    migrating service binding 'test31' in namespace 'default' (smID: 'XXX-fc36-4d50-a925-YYY')
-    deleting svcat resource type 'servicebindings' named 'test31' in namespace 'default'
+    migrating service instance 'feature-flags-ins' in namespace 'default' (smID: 'XXX-3d1f-40db-8cac-YYY')
+    deleting svcat resource type 'serviceinstances' named 'feature-flags-ins' in namespace 'default'
+    migrating service instance 'saas-ins1' in namespace 'default' (smID: 'XXX-0f94-4fde-b524-YYY')
+    deleting svcat resource type 'serviceinstances' named 'saas-ins1' in namespace 'default'
+    migrating service binding 'extended-service-binding2' in namespace 'default' (smID: 'XXX-fc36-4d50-a925-YYY')
+    deleting svcat resource type 'servicebindings' named 'extended-service-binding2' in namespace 'default'
     
     *** Migration completed successfully
     ```
