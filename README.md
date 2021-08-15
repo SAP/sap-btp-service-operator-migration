@@ -23,7 +23,7 @@ This document describes the process to migrate a registered Kubernetes platform,
 
 1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager service (technical name: ```service-manager```) with the ```service-operator-access``` plan and then creating a binding to that instance.</br></br>
    For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br>
-2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**In the ```cluster.id``` parameter, specify the clusterID which is retrieved by running **
+2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**In the ```cluster.id``` parameter, specify the clusterID which is retrieved by running**
 
 ```kubectl get configmap -n catalog cluster-info -o yaml```
  ```sh
@@ -59,7 +59,7 @@ To delpoy the SAP BTP service operator execute following command:
         --set manager.secret.url=<sm_url> \
         --set manager.secret.tokenurl=<url>
         --set cluster.id=<clusterID>
-    ```
+ ```
     
 3. Download and install the CLI needed to perform the migration in one of the two following ways:
 
@@ -125,7 +125,7 @@ To delpoy the SAP BTP service operator execute following command:
     To start a migration, run: 
     ```sh
     migrate run
-    ![#f03c15]Fetched`#f03c15` 2 instances from SM
+    Fetched 2 instances from SM
     *** Fetched 1 bindings from SM
     *** Fetched 5 svcat instances from cluster
     *** Fetched 2 svcat bindings from cluster
