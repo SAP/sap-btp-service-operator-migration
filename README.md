@@ -142,7 +142,7 @@ To delpoy the SAP BTP service operator execute following command:
   ```
 Before the actual migration starts, the script also validates whether all the resources are migratable.</br> Note that if there is an issue with one or more resources, the process stops.
   ```html
-    svcat instance <font color="green">'feature-flags-ins3'</font> in namespace 'default' was validated successfully
+    svcat instance  <span style="color:orange;">'feature-flags-ins3'</span> in namespace 'default' was validated successfully
     svcat instance 'saas-ins1' in namespace 'default' was validated successfully
     svcat binding 'extended-service-bindingn2' in namespace 'default' was validated successfully
     
