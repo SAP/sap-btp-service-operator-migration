@@ -26,10 +26,11 @@ This document describes the process to migrate a registered Kubernetes platform,
 2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**In the ```cluster.id``` parameter, specify the clusterID** which is retrieved by running the following command:
 
  ```sh
- `kubectl get configmap -n catalog cluster-info -o yaml
+kubectl get configmap -n catalog cluster-info -o yaml
+
 apiVersion: v1
 data:
-  ***id: ab7fa5e9-5cc3-468f-ab4d-143458785d07***
+  **id: ab7fa5e9-5cc3-468f-ab4d-143458785d07**
 kind: ConfigMap
 metadata:
   creationTimestamp: "2021-08-11T12:29:27Z"
