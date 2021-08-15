@@ -118,7 +118,7 @@ To delpoy the SAP BTP service operator execute following command:
   ```migrate run```
   
    #### *Note* 
-   if you'd like to perform a dry run first, execute:</br>
+   if - ![#f03c15] you'd  `#f03c15`like to perform a dry run first, execute:</br>
     ```migrate dry-run```
    
 #### Migration Script Example
@@ -127,7 +127,7 @@ To delpoy the SAP BTP service operator execute following command:
   ```sh
     migrate run
     
-     <span style="color:orange;">Fetched 2 instances from SM </span>
+     - ![#f03c15]Fetched 2 instances from SM  `#f03c15`
     *** Fetched 1 bindings from SM
     *** Fetched 5 svcat instances from cluster
     *** Fetched 2 svcat bindings from cluster
