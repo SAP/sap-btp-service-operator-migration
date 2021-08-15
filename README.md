@@ -23,7 +23,33 @@ This document describes the process to migrate a registered Kubernetes platform,
 
 1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager service (technical name: ```service-manager```) with the ```service-operator-access``` plan and then creating a binding to that instance.</br></br>
    For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br>
-2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**In the ```cluster.id``` parameter, specify the clusterID that was used when [registering the subaccount-scoped Kubernetes platform](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) that you want to migrate.**
+2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**In the ```cluster.id``` parameter, specify the clusterID which is retrieved by running 
+
+```kubectl get configmap -n catalog cluster-info -o yaml```
+
+ ```sh
+apiVersion: v1
+data:
+  ***id: ab7fa5e9-5cc3-468f-ab4d-143458785d07***
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2021-08-11T12:29:27Z"
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:data:
+        .: {}
+        f:id: {}
+    manager: service-catalog
+    operation: Update
+    time: "2021-08-11T12:29:27Z"
+  name: cluster-info
+  namespace: catalog
+  resourceVersion: "810930"
+  uid: d07d3d11-d5a2-4973-aab0-355cb960ec71
+  ```
+4. (https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) that you want to migrate.**
    
    ```bash
     helm upgrade --install sap-btp-operator https://github.com/SAP/sap-btp-service-operator/releases/download/<release>/sap-btp-operator-<release>.tgz \
@@ -83,6 +109,9 @@ This document describes the process to migrate a registered Kubernetes platform,
    Where the parameter values are as following:</br> **platformID** is the ID that was used when [registering the subaccount-scoped Kubernetes platform](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) </br> **instanceID** is the ID of the ```service-operator-access``` instance created in the step 1 of the [Setup](#setup).</br>
    #### *Note* 
     *Once the migration process has been initiated, the platform is suspended, and you cannot create, update or delete its service instances and service bindings.</br>The process is reversible for as long as you don't start the execution script described in the next step.*
+    
+   If you'd like to cancel the migration, execute the following command: </br>
+```smctl curl -X DELETE  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br></br>
    
 
 2. Execute the migration by running the following command:</br>
@@ -92,15 +121,18 @@ This document describes the process to migrate a registered Kubernetes platform,
     The script first scans all service instances and service bindings that are managed in your cluster by SVCAT, and verifies whether they are also maintained in SAP BTP.</br>Migration won't be performed on those instances and bindings that aren't found in SAP BTP:
     ```sh
     migrate run
+    
     *** Fetched 2 instances from SM
     *** Fetched 1 bindings from SM
     *** Fetched 5 svcat instances from cluster
     *** Fetched 2 svcat bindings from cluster
     *** Preparing resources
-    svcat instance name 'test11' id 'XXX-6134-4c89-bff5-YYY' (test11) not found in SM, skipping it...
-    svcat instance name 'test21' id 'XXX-cae6-4e23-9e8a-YYY' (test21) not found in SM, skipping it...
-    svcat instance name 'test22' id 'XXX-dc1d-49d1-86c0-YYY' (test22) not found in SM, skipping it...
-    svcat binding name 'test5' id 'XXX-5226-42cc-81e5-YYY' (test5) not found in SM, skipping it...
+    
+    svcat instance name 'postgres_ins_1' id 'XXX-6134-4c89-bff5-YYY' (test11) not found in SM, skipping it...
+    svcat instance name 'xsuaa_ins_2' id 'XXX-cae6-4e23-9e8a-YYY' (test21) not found in SM, skipping it...
+    svcat instance name 'certificate_3' id 'XXX-dc1d-49d1-86c0-YYY' (test22) not found in SM, skipping it...
+    svcat binding name 'auditlog_1' id 'XXX-5226-42cc-81e5-YYY' (test5) not found in SM, skipping it...
+    
     *** found 2 instances and 1 bindings to migrate 
     ```
     
@@ -120,6 +152,7 @@ This document describes the process to migrate a registered Kubernetes platform,
     deleting svcat resource type 'serviceinstances' named 'test35' in namespace 'default'
     migrating service binding 'test31' in namespace 'default' (smID: 'XXX-fc36-4d50-a925-YYY')
     deleting svcat resource type 'servicebindings' named 'test31' in namespace 'default'
+    
     *** Migration completed successfully
     ```
     
