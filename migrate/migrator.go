@@ -424,8 +424,8 @@ func (m *Migrator) getMigrateBindingRequestBody(k8sName string, secret *corev1.S
 		}`, k8sName, secretData), nil
 }
 
-func (m *Migrator) validate(ctx context.Context, instancesToMigrate []serviceInstancePair, bindingsToMigrate []serviceBindingPair) (int, bytes.Buffer) {
-	var buffer bytes.Buffer
+func (m *Migrator) validate(ctx context.Context, instancesToMigrate []serviceInstancePair, bindingsToMigrate []serviceBindingPair) (int, *bytes.Buffer) {
+	buffer := new(bytes.Buffer)
 	count := 0
 	for _, pair := range instancesToMigrate {
 		err := m.migrateInstanceDryRun(ctx, pair)
