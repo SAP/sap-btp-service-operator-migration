@@ -21,9 +21,9 @@ This document describes the process to migrate a registered Kubernetes platform,
 
 ## Setup
 
-1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager service (technical name: ```service-manager```) with the ```service-operator-access``` plan and then creating a binding to that instance.</br></br>
+1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager (technical name: ```service-manager```) with the ```service-operator-access``` plan and then creating a binding to that instance.</br></br>
    For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br>
-2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**In the ```cluster.id``` parameter, specify the clusterID** which is retrieved by running the following command:
+2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**For the ```cluster.id``` parameter, specify the clusterID** that you retrieve by running the following command:
 
  ```sh
 kubectl get configmap -n catalog cluster-info -o yaml
@@ -49,7 +49,7 @@ metadata:
   resourceVersion: "810930"
   uid: d07d3d11-d5a2-4973-aab0-355cb960ec71
   ```
-To delpoy the SAP BTP service operator execute following command: 
+To delpoy the SAP BTP service operator, execute the following command: 
    
    ```bash
     helm upgrade --install sap-btp-operator https://github.com/SAP/sap-btp-service-operator/releases/download/<release>/sap-btp-operator-<release>.tgz \
@@ -108,21 +108,23 @@ To delpoy the SAP BTP service operator execute following command:
 ```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br></br>
    Where the parameter values are as following:</br> **platformID** is the ID that was used when [registering the subaccount-scoped Kubernetes platform](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) </br> **instanceID** is the ID of the ```service-operator-access``` instance created in the step 1 of the [Setup](#setup).</br>
    #### *Note* 
-    *Once the migration process has been initiated, the platform is suspended, and you cannot create, update or delete its service instances and service bindings.</br>The process is reversible for as long as you don't start the execution script described in the next step.*
+    *Once the migration process has been initiated, the platform is suspended, and you cannot create, update, or delete its service instances and service bindings.</br>The process is reversible for as long as you don't start the execution script described in the step 2.*
     
-   If you'd like to cancel the migration, execute the following command: </br>
-```smctl curl -X DELETE  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br></br>
+   *To cancel the migration, execute the following command: </br>
+```smctl curl -X DELETE  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID```* </br></br>
    
 
-2. Execute the migration by running the following command:</br>
+2. To execute the migration, run the following command:</br>
   ```migrate run```
   
    #### *Note* 
-   if you'd like to perform a dry run first, execute:</br>
-    ```migrate dry-run```
+   *If you'd like to perform a dry run first, execute:</br>
+    ```migrate dry-run```*<br>
+   *Dry run performs the scan and validation steps described in the migration script example below without performing the actual migration.<br>At the end of the run, summary including all encountered errors is shown.*
    
 #### Migration Script Example
-   The script first scans all service instances and service bindings that are managed in your cluster by SVCAT, and verifies whether they are also maintained in SAP BTP.</br>Migration won't be performed on those instances and bindings that aren't found in SAP BTP:
+   
+   1. The script first scans all service instances and service bindings that are managed in your cluster by SVCAT, and verifies whether they are also maintained in SAP BTP.</br>Migration won't be performed on those instances and bindings that aren't found in SAP BTP:
 
   ```sh
     migrate run
@@ -140,7 +142,7 @@ To delpoy the SAP BTP service operator execute following command:
     
     *** found 2 instances and 1 bindings to migrate 
   ```
-Before the actual migration starts, the script also validates whether all the resources are migratable.</br> Note that if there is an issue with one or more resources, the process stops.
+  2. Before the actual migration starts, the script also validates whether all the resources are migratable.</br> Note that if there is an issue with one or more resources, the process stops.
   ```html
     svcat instance 'feature-flags-ins3' in namespace 'default' was validated successfully
     svcat instance 'saas-ins1' in namespace 'default' was validated successfully
@@ -149,7 +151,7 @@ Before the actual migration starts, the script also validates whether all the re
     *** Validation completed successfully
    ```
     
-   After all of the sources were validated successfully, the actual migration starts.</br>Each service instance and binding is removed from the Service Catalog (SVCAT) and added to the SAP BTP service operator:
+  3. After all of the sources were validated successfully, the actual migration starts.</br>Each service instance and binding is removed from the Service Catalog (SVCAT) and added to the SAP BTP service operator:
   ```
     migrating service instance 'feature-flags-ins' in namespace 'default' (smID: 'XXX-3d1f-40db-8cac-YYY')
     deleting svcat resource type 'serviceinstances' named 'feature-flags-ins' in namespace 'default'
@@ -160,12 +162,7 @@ Before the actual migration starts, the script also validates whether all the re
     
     *** Migration completed successfully
   ```
-  #### Dry Run
-   Before executing the migration, you can perform a dry run by running the following command:</br>
-   ```migrate dry-run```
-
-   The dry run performs both validations mentioned in the previous section, but doesn't perform the actual migration.</br>
-   At the end of the run, summary including all encountered errors is shown. 
+   
     
   #### *Note* 
    *Once the migration process has been completed, the SVCAT-based platform is no longer usable.* 
