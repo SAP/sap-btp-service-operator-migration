@@ -22,7 +22,7 @@ This document describes the process to migrate a registered Kubernetes platform,
 ## Setup
 
 1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager (technical name: ```service-manager```) with the ```service-operator-access``` plan and then creating a binding to that instance.</br></br>
-   For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br>
+   For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br><br>
 2. Deploy the SAP BTP service operator in the cluster using the access credentials that were obtained in the previous step.</br>**For the ```cluster.id``` parameter, specify the clusterID** that you retrieve by running the following command:
 
  ```sh
