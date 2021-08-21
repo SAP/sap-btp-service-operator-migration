@@ -114,13 +114,11 @@ To delpoy the SAP BTP service operator, execute the following command:
 ```smctl curl -X DELETE  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID```* </br></br>
    
 
-2. To execute the migration, run the following command:</br>
-  ```migrate run```
+2. You've decided to proceed with the migration. At this point, you have two options at your disposal:<br>
+   - Execute the actual migration by running the following command: ```migrate run```.
+   - Perform a dry run before you execute the migration by running: ```migrate dry-run```.
   
-   #### *Note* 
-   *If you'd like to perform a dry run first, execute:</br>
-    ```migrate dry-run```*<br>
-   *Dry run performs the scan and validation steps described in the migration script example below without performing the actual migration.<br>At the end of the run, summary including all encountered errors is shown.*
+   Dry run is useful if you wish to execute the scan and validation steps described in the migration script example below without performing the actual migration.<br>At the end of the run, summary including all encountered errors is shown.<br>This way, you can decide whether to continue with the migration or first fix the issues.
    
 #### Migration Script Example
    
