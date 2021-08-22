@@ -109,18 +109,19 @@ To delpoy the SAP BTP service operator, execute the following command:
 1. Prepare your platform for migration by executing the following command: </br>
 ```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br></br>
    Where the parameter values are as following:</br> **platformID** is the ID that was used when [registering the subaccount-scoped Kubernetes platform](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) </br> **instanceID** is the ID of the ```service-operator-access``` instance created in the step 1 of the [Setup](#setup).</br>
-   #### *Note* 
-    *Once the migration process has been initiated, the platform is suspended, and you cannot create, update, or delete its service instances and service bindings.</br>The process is reversible for as long as you don't start the execution script described in the step 2.*
-    
-   *To cancel the migration, execute the following command: </br>
-```smctl curl -X DELETE  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID```* </br></br>
-   
-
-2. You've decided to proceed with the migration. At this point, you have two options at your disposal:<br>
+  
+  
+2. At this point, you have two options at your disposal:<br>
    - Execute the actual migration by running the following command: ```migrate run```.
    - Perform a dry run before you execute the migration by running: ```migrate dry-run```.
   
    Dry run is useful if you wish to execute the scan and validation steps described in the migration script example below without performing the actual migration.<br>At the end of the run, summary including all encountered errors is shown.<br>This way, you can decide whether to continue with the migration or first fix the issues.
+   
+    #### *Note* 
+    *Once the migration process has been initiated, the platform is suspended, and you cannot create, update, or delete its service instances and service bindings.</br>The process is reversible for as long as the actual migration of the resources does not start (described below in the part 3 of the migration script example).*
+    
+   *To cancel the migration, execute the following command: </br>
+```smctl curl -X DELETE  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID```* </br></br>
    
 #### Migration Script Example
    
