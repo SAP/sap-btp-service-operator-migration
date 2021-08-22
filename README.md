@@ -35,21 +35,8 @@ data:
   **id: ab7fa5e9-5cc3-468f-ab4d-143458785d07**
 kind: ConfigMap
 metadata:
-  creationTimestamp: "2021-08-11T12:29:27Z"
-  managedFields:
-  - apiVersion: v1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:data:
-        .: {}
-        f:id: {}
-    manager: service-catalog
-    operation: Update
-    time: "2021-08-11T12:29:27Z"
-  name: cluster-info
-  namespace: catalog
-  resourceVersion: "810930"
-  uid: d07d3d11-d5a2-4973-aab0-355cb960ec71
+ .
+ .
   ```
 To delpoy the SAP BTP service operator, execute the following command: 
    
@@ -118,7 +105,7 @@ To delpoy the SAP BTP service operator, execute the following command:
    Dry run is useful if you wish to execute the scan and validation steps described in the migration script example below without performing the actual migration.<br>At the end of the run, summary including all encountered errors is shown.<br>This way, you can decide whether to continue with the migration or first fix the issues.
    
     #### *Note* 
-    *Once the migration process has been initiated, the platform is suspended, and you cannot create, update, or delete its service instances and service bindings.</br>The process is reversible for as long as the actual migration of the resources does not start (described below in the part 3 of the migration script example).*
+    *Once the actual migration process has been initiated, the platform is suspended, and you cannot create, update, or delete its service instances and service bindings.</br>The process is reversible for as long as the actual migration of the resources does not start (described below in the part 3 of the migration script example).*
     
    *To cancel the migration, execute the following command: </br>
 ```smctl curl -X DELETE  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID```* </br></br>
@@ -136,30 +123,30 @@ To delpoy the SAP BTP service operator, execute the following command:
     *** Fetched 2 svcat bindings from cluster
     *** Preparing resources
     
-    svcat instance name 'postgres_ins_1' id 'XXX-6134-4c89-bff5-YYY' (postgres_ins_1) not found in SM, skipping it...
-    svcat instance name 'xsuaa_ins_2' id 'XXX-cae6-4e23-9e8a-YYY' (xsuaa_ins_2) not found in SM, skipping it...
-    svcat instance name 'certificate_3' id 'XXX-dc1d-49d1-86c0-YYY' (certificate_3) not found in SM, skipping it...
-    svcat binding name 'auditlog_1' id 'XXX-5226-42cc-81e5-YYY' (auditlog_1) not found in SM, skipping it...
+    svcat instance name 'some_instance_name_1' id 'XXX-6134-4c89-bff5-YYY' (some_instance_name_1) not found in SM, skipping it...
+    svcat instance name 'some_instance_name_2' id 'XXX-cae6-4e23-9e8a-YYY' (some_instance_name_2) not found in SM, skipping it...
+    svcat instance name 'some_instance_name_3' id 'XXX-dc1d-49d1-86c0-YYY' (some_instance_name_3) not found in SM, skipping it...
+    svcat binding name 'some_binding_name_1' id 'XXX-5226-42cc-81e5-YYY' (some_binding_name_1) not found in SM, skipping it...
     
     *** found 2 instances and 1 bindings to migrate 
   ```
   2. Before the actual migration starts, the script also validates whether all the resources are migratable.</br> Note that if there is an issue with one or more resources, the process stops.
   ```html
-    svcat instance 'feature-flags-ins3' in namespace 'default' was validated successfully
-    svcat instance 'saas-ins1' in namespace 'default' was validated successfully
-    svcat binding 'extended-service-bindingn2' in namespace 'default' was validated successfully
+    svcat instance 'some_instance_name_4' in namespace 'namespace_name' was validated successfully
+    svcat instance 'some_instance_name_5' in namespace 'namespace_name' was validated successfully
+    svcat binding 'some_binding_name_2' in namespace 'namespace_name' was validated successfully
     
     *** Validation completed successfully
    ```
     
   3. After all of the sources were validated successfully, the actual migration starts.</br>Each service instance and binding is removed from the Service Catalog (SVCAT) and added to the SAP BTP service operator:
   ```
-    migrating service instance 'feature-flags-ins' in namespace 'default' (smID: 'XXX-3d1f-40db-8cac-YYY')
-    deleting svcat resource type 'serviceinstances' named 'feature-flags-ins' in namespace 'default'
-    migrating service instance 'saas-ins1' in namespace 'default' (smID: 'XXX-0f94-4fde-b524-YYY')
-    deleting svcat resource type 'serviceinstances' named 'saas-ins1' in namespace 'default'
-    migrating service binding 'extended-service-binding2' in namespace 'default' (smID: 'XXX-fc36-4d50-a925-YYY')
-    deleting svcat resource type 'servicebindings' named 'extended-service-binding2' in namespace 'default'
+    migrating service instance 'some_instance_name_4' in namespace 'namespace_name' (smID: 'XXX-3d1f-40db-8cac-YYY')
+    deleting svcat resource type 'serviceinstances' named 'some_instance_name_4' in namespace 'namespace_name'
+    migrating service instance 'some_instance_name_5' in namespace 'namespace_name' (smID: 'XXX-0f94-4fde-b524-YYY')
+    deleting svcat resource type 'serviceinstances' named 'some_instance_name_5' in namespace 'namespace_name'
+    migrating service binding 'some_binding_name_2' in namespace 'namespace_name' (smID: 'XXX-fc36-4d50-a925-YYY')
+    deleting svcat resource type 'servicebindings' named 'some_binding_name_2' in namespace 'namespace_name'
     
     *** Migration completed successfully
   ```
