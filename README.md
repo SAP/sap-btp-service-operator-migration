@@ -95,7 +95,7 @@ To delpoy the SAP BTP service operator, execute the following command:
 
 1. Prepare your platform for migration by executing the following command: </br>
 ```smctl curl -X PUT  -d '{"sourcePlatformID": ":platformID"}' /v1/migrate/service_operator/:instanceID``` </br></br>
-   Where the parameter values are as following:</br> **platformID** is the ID that was used when [registering the subaccount-scoped Kubernetes platform](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html) </br> **instanceID** is the ID of the ```service-operator-access``` instance created in the step 1 of the [Setup](#setup).</br>
+   Where the parameter values are as following:</br> **platformID** is the ID that was generated when you registered a subaccount-scoped cluster in the step 1 of [Cluster Configuration](https://help.sap.com/viewer/09cc82baadc542a688176dce601398de/Cloud/en-US/a55506d6ceea4e3bb4534739bf0699d9.html). </br> **instanceID** is the ID of the ```service-operator-access``` instance created in the step 1 of the [Setup](#setup).</br>
   
   
 2. At this point, you have two options at your disposal:<br>
