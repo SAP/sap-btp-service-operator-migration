@@ -21,26 +21,10 @@ This document describes the process to migrate a registered Kubernetes platform,
 
 ## Setup
 
-1. Obtain the access credentials for the SAP BTP service operator by creating an instance of the SAP Service Manager (technical name: ```service-manager```) with the ```service-operator-access``` plan and then creating a binding to that instance.</br></br>
-   For more information about the process, see the steps 1 and 2 in the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br><br>
-2. Deploy the SAP BTP service operator in the cluster by using the access credentials that were obtained in the previous step.<br><br>*Note*<br>*The cluster needs to be the same cluster with your svcat-based content, therefore you'll need to specify the cluster ID to identify it.*</br>*To find the cluster.id value that you'll use in the deployment script, run the following command:*
+1. Perform steps 1 and 2 of the **Setup** section of [SAP BTP Service Operator for Kubernetes](https://github.com/SAP/sap-btp-service-operator#setup).</br>
+2. Deploy the SAP BTP service operator by executing the following command:
 
-   *```kubectl get configmap -n catalog cluster-info -o yaml``` and search for the **id** value in the output.*
-
-Output example:
-
- ```sh
-apiVersion: v1
-data:
-  **id: ab7fa5e9-5cc3-468f-ab4d-143458785d07**
-kind: ConfigMap
-metadata:
- .
- .
-  ```
-To delpoy the SAP BTP service operator, execute the following command: 
-   
-   ```bash
+    ```bash
     helm upgrade --install sap-btp-operator https://github.com/SAP/sap-btp-service-operator/releases/download/<release>/sap-btp-operator-<release>.tgz \
         --create-namespace \
         --namespace=sap-btp-operator \
@@ -49,8 +33,24 @@ To delpoy the SAP BTP service operator, execute the following command:
         --set manager.secret.url=<sm_url> \
         --set manager.secret.tokenurl=<url>
         --set cluster.id=<clusterID>
- ```
-    
+    ```
+ 
+   *Note:*<br>*Regarding the last parameter of the deployment script: ```--set cluster.id=<clusterID>```<br>The deployment needs to be in the same cluster in which your svcat-       based content that you want to migrate is, therefore you'll need to specify the cluster ID.*</br>*To find the cluster ID, run the following command:*
+
+    ```kubectl get configmap -n catalog cluster-info -o yaml``` and search for the **id** value in the output.*
+
+     *Output example:*
+
+      ```sh
+     apiVersion: v1
+     data:
+       **id: ab7fa5e9-5cc3-468f-ab4d-143458785d07**
+     kind: ConfigMap
+     metadata:
+      .
+      .
+     ```
+       
 3. Download and install the CLI needed to perform the migration in one of the two following ways:
 
 
