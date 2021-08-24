@@ -35,9 +35,10 @@ This document describes the process to migrate a registered Kubernetes platform,
         --set cluster.id=<clusterID>
     ```
  
-   *Note:*<br>*The last parameter of the deployment script: ```--set cluster.id=<clusterID>``` is necessary to specify the ID of the cluster with your svcat-based content that you want to migrate.*</br>*To find it, run the following command:*
+   *Note:*<br> 
+      - clusterID: specify the ID of the cluster</br>*To find it, run:*
 
-    ```kubectl get configmap -n catalog cluster-info -o yaml``` and search for the **id** value in the output.*
+    ```kubectl get configmap -n catalog cluster-info -o yaml``` and extract **id** value from the output.*
 
      *Output example:*
 
