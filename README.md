@@ -35,22 +35,20 @@ This document describes the process to migrate a registered Kubernetes platform,
         --set cluster.id=<clusterID>
     ```
  
-   *Note:*<br> 
-      - clusterID: specify the ID of the cluster</br>*To find it, run:*
+      *Note:*<br> 
+      - ```<clusterID>``` - *specify the ID of the cluster. To find it, run: ```kubectl get configmap -n catalog cluster-info -o yaml``` and extract **id** from the output.*
 
-    ```kubectl get configmap -n catalog cluster-info -o yaml``` and extract **id** value from the output.*
+        *Output example:*
 
-     *Output example:*
-
-      ```sh
-     apiVersion: v1
-     data:
-       **id: ab7fa5e9-5cc3-468f-ab4d-143458785d07**
-     kind: ConfigMap
-     metadata:
-      .
-      .
-     ```
+         ```sh
+        apiVersion: v1
+        data:
+          **id: ab7fa5e9-5cc3-468f-ab4d-143458785d07**
+        kind: ConfigMap
+        metadata:
+         .
+         .
+        ```
        
 3. Download and install the CLI needed to perform the migration in one of the two following ways:
 
