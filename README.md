@@ -1,6 +1,6 @@
-# Migration to SAP BTP Service Operator 
+# Migrating from svcat to SAP BTP Service Operator-Based Platform 
 
-SAP BTP service operator provides the ability to provision and consume SAP Cloud Platform from Kubernetes cluster in a Kubernetes-native way, based on the K8s Operator pattern.
+SAP BTP service operator enables you to provision and consume SAP Business Technology Platform from Kubernetes cluster in a Kubernetes-native way, based on the K8s Operator pattern.
 
 This document describes the process to migrate a registered Kubernetes platform, based on the Service Catalog (svcat) and Service Manager agent, together with its content, to a SAP BTP service operator-based platform.
 
