@@ -161,3 +161,4 @@ The SAP BTP service operator project maintainers will respond to the best of the
 We currently do not accept community contributions.
 
 ## License
+This project is licensed under Apache 2.0 except as noted otherwise in the [license](LICENSES/Apache-2.0.txt) file.
