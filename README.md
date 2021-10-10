@@ -10,7 +10,6 @@ This document describes the process to migrate a registered Kubernetes platform,
 * [Setup](#setup)
 * [Migration](#migration)
 * [Support](#support)
-* [Troubleshooting](#troubleshooting)
 * [License](#license)
 
 ## Prerequisites
