@@ -9,10 +9,8 @@ This document describes the process to migrate a registered Kubernetes platform,
 * [Prerequisites](#prerequisites)
 * [Setup](#setup)
 * [Migration](#migration)
-* [Reference Documentation](#reference-documentation)
 * [Support](#support)
 * [Troubleshooting](#troubleshooting)
-* [Contributions](#contributions)
 * [License](#license)
 
 ## Prerequisites
@@ -154,15 +152,12 @@ This document describes the process to migrate a registered Kubernetes platform,
   #### *Note* 
    *Once the migration process has been completed, the SVCAT-based platform is no longer usable.* 
    
-## Reference Documentation
 
 ## Support
 You're welcome to raise issues related to feature requests, bugs, or give us general feedback on this project's GitHub Issues page. 
 The SAP BTP service operator project maintainers will respond to the best of their abilities. 
 
-## Troubleshooting
-
 ## Contributions
-
+We currently do not accept community contributions.
 
 ## License
