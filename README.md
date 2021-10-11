@@ -1,4 +1,7 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/sap-btp-service-operator-migration)](https://api.reuse.software/info/github.com/SAP/sap-btp-service-operator-migration)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/SAP/sap-btp-service-operator-migration/blob/master/LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/SAP/sap-btp-service-operator-migration)](https://goreportcard.com/report/github.com/SAP/sap-btp-service-operator-migration)
+
 
 # Migration to SAP BTP Service Operator 
 
