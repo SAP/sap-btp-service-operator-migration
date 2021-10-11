@@ -1,3 +1,5 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP/sap-btp-service-operator-migration)](https://api.reuse.software/info/github.com/SAP/sap-btp-service-operator-migration)
+
 # Migration to SAP BTP Service Operator 
 
 SAP BTP service operator provides the ability to provision and consume SAP Cloud Platform from Kubernetes cluster in a Kubernetes-native way, based on the K8s Operator pattern.
