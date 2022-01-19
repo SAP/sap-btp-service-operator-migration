@@ -28,14 +28,18 @@ This document describes the process to migrate a registered Kubernetes platform,
 2. Deploy the SAP BTP service operator by executing the following command:
 
     ```bash
-    helm upgrade --install sap-btp-operator https://github.com/SAP/sap-btp-service-operator/releases/download/<release>/sap-btp-operator-<release>.tgz \
-        --create-namespace \
-        --namespace=sap-btp-operator \
-        --set manager.secret.clientid=<clientid> \
-        --set manager.secret.clientsecret=<clientsecret> \
-        --set manager.secret.url=<sm_url> \
-        --set manager.secret.tokenurl=<url>
-        --set cluster.id=<clusterID>
+     helm repo add sap-btp-operator https://sap.github.io/sap-btp-service-operator
+    ```
+
+    ```bash
+    helm upgrade --install <release-name> sap-btp-operator/sap-btp-operator \
+    --create-namespace \
+    --namespace=sap-btp-operator \        
+    --set manager.secret.clientid=<clientid> \
+    --set manager.secret.clientsecret=<clientsecret> \
+    --set manager.secret.url=<sm_url> \
+    --set manager.secret.tokenurl=<url> \
+    --set cluster.id=<clusterID>
     ```
  
       *Note:*<br> 
