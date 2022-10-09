@@ -37,7 +37,7 @@ This document describes the process to migrate a registered Kubernetes platform,
     --namespace=sap-btp-operator \        
     --set manager.secret.clientid=<clientid> \
     --set manager.secret.clientsecret=<clientsecret> \
-    --set manager.secret.url=<sm_url> \
+    --set manager.secret.sm_url=<sm_url> \
     --set manager.secret.tokenurl=<url> \
     --set cluster.id=<clusterID>
     ```

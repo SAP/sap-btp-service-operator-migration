@@ -16,7 +16,7 @@ func GetSMClient(ctx context.Context, secret *v1.Secret) sm.Client {
 	return sm.NewClient(ctx, &sm.ClientConfig{
 		ClientID:     string(secretData["clientid"]),
 		ClientSecret: string(secretData["clientsecret"]),
-		URL:          string(secretData["url"]),
+		URL:          string(secretData["sm_url"]),
 		TokenURL:     string(secretData["tokenurl"]),
 		SSLDisabled:  false,
 	}, nil)
